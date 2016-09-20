@@ -15,9 +15,9 @@ class Display
       print "#{i} "
       row.each_with_index do |piece,j|
         if @cursor.cursor_pos == [i,j]
-          print piece.type.colorize(:yellow)
-        else
           print piece.type.colorize(:green)
+        else
+          print piece.type.colorize(piece.color)
         end
         print ' '
       end

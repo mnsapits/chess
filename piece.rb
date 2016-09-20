@@ -122,27 +122,50 @@ class Rook < SlidingPiece
 end
 
 class Pawn < Piece
+
+  def type
+    "P"
+  end
   def move
     starting_pos = @pos
+    x, y = starting_pos
     open_positions = []
     move_dirs.each do |direction|
       current_pos = starting_pos
-      dx,dy = MOVES[direction]
-      x,y = current_pos
+      dx, dy = direction
+      dx,dy = -dx,-dy if @color == :blue
       end_x = x + dx
       end_y = y + dy
       current_pos = [end_x, end_y]
       next if outside_or_blocked?(current_pos)
-      open_positions << current_pos
-      next if @board[current_pos].class == NullPiece
-      next if @board[current_pos].color != self.color
+      next if !at_start_row?(starting_pos) && dx.abs == 2
+      if straight?(direction)
+        open_positions << current_pos
+      else # diagonal
+        next if @board[current_pos].is_a? NullPiece
+        open_positions << current_pos if @board[current_pos].color != @color
+      end
     end
     open_positions
   end
-  def move_dirs
-    if at_start_row?(@pos)
-      []
+
+  def straight?(direction)
+    direction.last == 0
   end
+
+
+  def move_dirs
+    [[2, 0], [1, 0], [1, -1], [1, 1]]
+  end
+
+  def at_start_row?(pos)
+    if @color == :blue
+      pos.first == 6
+    else
+      pos.first == 1
+    end
+  end
+
 end
 
 class Bishop < SlidingPiece
@@ -167,7 +190,12 @@ end
 class NullPiece
   # include Singleton
   attr_accessor :type
+
   def type
-    "$"
+    "#"
   end
+  def color
+    :white
+  end
+
 end

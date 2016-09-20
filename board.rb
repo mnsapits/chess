@@ -40,10 +40,9 @@ end
 
 
 a = Board.new
-k = King.new("black", a,[5,6])
-r = Knight.new("black", a,[7,7])
-p r.move
-# a[[4,4]] = r
+q = Queen.new(:red,a,[4,5])
+k = Pawn.new(:blue, a,[5,6])
+p k.move
 a_display = Display.new(a)
 a_display.render
-# a_display.make_move
+ a_display.make_move
