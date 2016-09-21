@@ -1,4 +1,6 @@
 require 'byebug'
+require 'singleton'
+
 class Piece
 
   MOVES = {
@@ -28,6 +30,14 @@ class Piece
     return false if @board[pos].is_a? NullPiece
     return true if @board[pos].color == self.color
     false
+  end
+
+  def valid_moves(color)
+    self.move.reject do |final_pos|
+      temp = self.board.dup
+      temp.make_move(self.pos, final_pos)
+      temp.in_check?(color)
+    end
   end
 end
 
@@ -188,14 +198,19 @@ end
 
 
 class NullPiece
-  # include Singleton
+  include Singleton
   attr_accessor :type
+  attr_reader :color
+
+  def move
+  end
 
   def type
-    "#"
+    @type = '#'
   end
+
   def color
-    :white
+    @color = :white
   end
 
 end

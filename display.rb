@@ -11,7 +11,7 @@ class Display
     print "  "
     (0..7).each { |num,i| print "#{num} " }
     puts ''
-    @cursor.board.board.each_with_index do |row,i|
+    @cursor.board.grid.each_with_index do |row,i|
       print "#{i} "
       row.each_with_index do |piece,j|
         if @cursor.cursor_pos == [i,j]
